@@ -21,7 +21,7 @@ export default function FilterMenu() {
             align-items-center 
             gap-1 
             p-1 
-            rounded-pill
+            rounded-3
             w-100
           "
           style={{
@@ -41,7 +41,7 @@ export default function FilterMenu() {
                   flex-grow-1
                   py-1
                   py-lg-2 
-                  rounded-pill
+                  rounded-3
                 "
                 style={{
                   background: isActive ? "white" : "transparent",

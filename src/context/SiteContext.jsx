@@ -15,49 +15,106 @@ export const UseSiteContext = () => {
 export const SiteContextProvider = ({ children }) => {
   const [siteCards, setSiteCards] = useState([]);
   const [currentFilter, setCurrentFilter] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const getListSitesCard = async () => {
-    const { error, data } = await supabase
-      .from("sites")
-      .select(
-        `id, name,quick_description, summary, latitude, longitude, site_amenities(amenities(description, icon)), site_images(url_image)`
-      );
-    if (error) throw error;
+  const getListSitesCard = async (search = "") => {
+    setLoading(true);
+    setError(null);
+    try {
+      let query = supabase
+        .from("sites")
+        .select(
+          `id, name, quick_description, summary, latitude, longitude, site_amenities(amenities(description, icon)), site_images(url_image)`
+        );
 
-    setSiteCards(data);
+      if (search.trim()) {
+        query = query.ilike("name", `%${search}%`);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      setSiteCards(data || []);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const getListSitesCardByType = async (type) => {
-    const { error, data } = await supabase
-      .from("sites")
-      .select(
-        `id, name,quick_description, summary, latitude, longitude, site_amenities(amenities(description, icon)), site_images(url_image)`
-      )
-      .eq("type_id", type);
-    if (error) throw error;
-    setSiteCards(data);
+  const getListSitesCardByType = async (type, search = "") => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      let query = supabase
+        .from("sites")
+        .select(
+          `id, name, quick_description, summary, latitude, longitude, site_amenities(amenities(description, icon)), site_images(url_image)`
+        )
+        .eq("type_id", type);
+
+      if (search.trim()) {
+        query = query.ilike("name", `%${search}%`);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      setSiteCards(data || []);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFilterChange = async (filterId) => {
     setCurrentFilter(filterId);
 
     if (filterId === 0) {
-      await getListSitesCard();
+      await getListSitesCard(searchTerm);
     } else {
       if (filterId) {
-        await getListSitesCardByType(filterId);
+        await getListSitesCardByType(filterId, searchTerm);
       }
     }
+  };
+
+  const handleSearch = async (search = "") => {
+    setSearchTerm(search);
+
+    if (currentFilter === 0) {
+      await getListSitesCard(search);
+    } else {
+      await getListSitesCardByType(currentFilter, search);
+    }
+  };
+
+  const resetSites = () => {
+    setCurrentFilter(0);
+    getListSitesCard();
   };
 
   return (
     <SiteContext.Provider
       value={{
         siteCards,
+        loading,
+        error,
+        currentFilter,
+        searchTerm,
         getListSitesCard,
         getListSitesCardByType,
-        currentFilter,
         handleFilterChange,
+        handleSearch,
+        resetSites,
+        setCurrentFilter,
+        setSearchTerm,
       }}
     >
       {children}
