@@ -1,29 +1,49 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { UseSiteContext } from "../context/SiteContext";
 import Carousel from "../components/Carousel";
 import BadgeIcon from "../components/BadgeIcon";
 
 function InformationSite() {
-  const siteData = {
-    id: 2,
-    name: "Pelicano´s",
-    quick_description: "Con un exquisito sabor",
-    summary: "Restaurante mexicano con lo mejor del mar...",
-    about:
-      "lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet loremipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet ",
-    latitude: 19.34163092396336,
-    longitude: -90.73300883357103,
-    price_range: "$$ - $$$",
-    site_amenities: [
-      { amenities: { icon: "FaMusic", description: "Música en vivo" } },
-      { amenities: { icon: "GiShrimp", description: "Mariscos" } },
-      { amenities: { icon: "FaWineBottle", description: "Bar" } },
-    ],
-    site_images: [
-      { url_image: "restaurants/2-pelicanos/dish-pelicanos.jpg" },
-      { url_image: "restaurants/2-pelicanos/dish-pelicanos.png" },
-      { url_image: "restaurants/2-pelicanos/pelicanos.jpg" },
-      { url_image: "restaurants/2-pelicanos/pelicanossite.jpg" },
-    ],
-  };
+  const { id } = useParams();
+  const { getSiteDataById, siteData, loading, error } = UseSiteContext();
+
+  useEffect(() => {
+    if (id) {
+      getSiteDataById(id);
+    }
+  }, [id]);
+
+  // Estados de carga y error
+  if (loading) {
+    return (
+      <div className="col-12 col-lg-9 d-flex justify-content-center align-items-center mx-auto">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="col-12 col-lg-9 mx-auto">
+        <div className="alert alert-danger" role="alert">
+          Error al cargar los datos: {error}
+        </div>
+      </div>
+    );
+  }
+
+  if (!siteData) {
+    return (
+      <div className="col-12 col-lg-9 mx-auto">
+        <div className="alert alert-warning" role="alert">
+          No se encontró información para este sitio.
+        </div>
+      </div>
+    );
+  }
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${siteData.latitude},${siteData.longitude}`;
 

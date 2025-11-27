@@ -129,6 +129,7 @@ export const SiteContextProvider = ({ children }) => {
         error,
         currentFilter,
         searchTerm,
+        siteData,
         getListSitesCard,
         getListSitesCardByType,
         handleFilterChange,
@@ -136,6 +137,7 @@ export const SiteContextProvider = ({ children }) => {
         resetSites,
         setCurrentFilter,
         setSearchTerm,
+        getSiteDataById,
       }}
     >
       {children}

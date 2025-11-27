@@ -1,5 +1,6 @@
 import BadgeIcon from "./BadgeIcon";
 import Carousel from "./Carousel";
+import { useNavigate } from "react-router-dom";
 
 function Card(props) {
   const { children } = props;
@@ -23,9 +24,12 @@ export function CardBody(props) {
     urlImages,
     amenities,
     id,
+    id_tag,
     latitude,
     longitude,
   } = props;
+
+  const navigate = useNavigate();
 
   const handleOpenGoogleMaps = (e) => {
     e.preventDefault();
@@ -42,7 +46,7 @@ export function CardBody(props) {
 
   const handleCardClick = () => {
     // Temporalmente abre YouTube, luego cambiarás por tu ruta
-    window.open("https://youtube.com", "_blank", "noopener,noreferrer");
+    navigate(`/site/${id}`);
   };
 
   const handleKeyDown = (e) => {
@@ -61,9 +65,7 @@ export function CardBody(props) {
     <>
       <div className="col-4 col-lg-4 position-relative d-flex align-items-stretch">
         <div className="w-100 h-100">
-          {" "}
-          {/* Este div asegura que el carrusel ocupe todo el espacio */}
-          <Carousel urlImages={urlImages} id={`carousel-${id}`} />
+          <Carousel urlImages={urlImages} id={`carousel-${id_tag}`} />
         </div>
       </div>
       <div
