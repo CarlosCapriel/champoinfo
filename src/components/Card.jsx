@@ -23,7 +23,34 @@ export function CardBody(props) {
     urlImages,
     amenities,
     id,
+    latitude,
+    longitude,
   } = props;
+
+  const handleOpenGoogleMaps = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (latitude && longitude) {
+      const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+      window.open(googleMapsUrl, "_blank", "noopener,noreferrer");
+    } else {
+      console.warn("Coordenadas no disponibles para este sitio");
+      alert("Ubicación no disponible para este sitio");
+    }
+  };
+
+  const handleCardClick = () => {
+    // Temporalmente abre YouTube, luego cambiarás por tu ruta
+    window.open("https://youtube.com", "_blank", "noopener,noreferrer");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
 
   const cardStyle = {
     textDecoration: "none",
@@ -32,13 +59,22 @@ export function CardBody(props) {
 
   return (
     <>
-      <div className="col-4 col-lg-4 position-relative">
-        <Carousel urlImages={urlImages} id={`carousel-${id}`} />
+      <div className="col-4 col-lg-4 position-relative d-flex align-items-stretch">
+        <div className="w-100 h-100">
+          {" "}
+          {/* Este div asegura que el carrusel ocupe todo el espacio */}
+          <Carousel urlImages={urlImages} id={`carousel-${id}`} />
+        </div>
       </div>
-      <a
+      <div
         href="https://youtube.com"
         className="card-body col-8 col-lg-8 p-3 d-flex flex-column"
         style={cardStyle}
+        onClick={handleCardClick}
+        onKeyDown={handleKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-label={`Ver detalles de ${siteName}`}
       >
         <h5
           className="card-title fw-bold mb-1 
@@ -53,7 +89,6 @@ export function CardBody(props) {
           {siteQuickDescription}
         </h6>
 
-        {/* Amenities */}
         <div className="d-flex gap-1 gap-md-2 flex-wrap mb-2">
           {amenities.map((amenity, index) => (
             <BadgeIcon
@@ -75,11 +110,15 @@ export function CardBody(props) {
         </div>
 
         <div className="maps-link mt-2">
-          <button className="btn btn-outline-primary btn-sm w-100">
+          <button
+            className="btn btn-outline-primary btn-sm w-100"
+            onClick={handleOpenGoogleMaps}
+            aria-label={`Abrir ubicación de ${siteName} en Google Maps`}
+          >
             Ver en Google Maps
           </button>
         </div>
-      </a>
+      </div>
     </>
   );
 }

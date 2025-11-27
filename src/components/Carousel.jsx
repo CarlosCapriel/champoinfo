@@ -36,15 +36,19 @@ function Carousel({ urlImages, id = "carousel" }) {
             }`}
             key={index}
           >
-            <img
-              src={`${apiBaseUrl}${folderSiteImages}/${urlImage.url_image}`}
-              className="d-block w-100 h-100"
-              alt={`Slide ${index + 1}`}
-              style={{
-                objectFit: "cover",
-                minHeight: "120px",
-              }}
-            />
+            {/* Contenedor con relación de aspecto fija */}
+            <div className="ratio ratio-1x1 h-100">
+              {" "}
+              {/* Cambia ratio-1x1 por ratio-16x9 si prefieres 16:9 */}
+              <img
+                src={`${apiBaseUrl}${folderSiteImages}/${urlImage.url_image}`}
+                className="d-block w-100 h-100"
+                alt={`Slide ${index + 1}`}
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+            </div>
           </div>
         ))}
       </div>

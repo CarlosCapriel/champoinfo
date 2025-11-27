@@ -19,6 +19,8 @@ function CardList() {
             urlImages={site.site_images}
             amenities={site.site_amenities}
             id={index}
+            latitude={site.latitude}
+            longitude={site.longitude}
           />
         </Card>
       ))}

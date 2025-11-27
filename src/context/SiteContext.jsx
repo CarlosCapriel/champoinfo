@@ -18,6 +18,7 @@ export const SiteContextProvider = ({ children }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [siteData, setSiteData] = useState(null);
 
   const getListSitesCard = async (search = "") => {
     setLoading(true);
@@ -66,6 +67,26 @@ export const SiteContextProvider = ({ children }) => {
       if (error) throw error;
 
       setSiteCards(data || []);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getSiteDataById = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error } = await supabase
+        .from("sites")
+        .select(
+          `id, name, quick_description, about, price_range, latitude, longitude, site_amenities(amenities(description, icon)), site_images(url_image)`
+        )
+        .eq("id", id)
+        .single();
+      if (error) throw error;
+      setSiteData(data || null);
     } catch (error) {
       setError(error.message);
     } finally {
