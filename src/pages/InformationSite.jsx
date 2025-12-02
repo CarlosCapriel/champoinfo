@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { UseSiteContext } from "../context/SiteContext";
 import Carousel from "../components/Carousel";
 import BadgeIcon from "../components/BadgeIcon";
+import DOMPurify from "dompurify";
 
 function InformationSite() {
   const { id } = useParams();
@@ -47,6 +48,8 @@ function InformationSite() {
 
   const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${siteData.latitude},${siteData.longitude}`;
 
+  const sanitizedAbout = DOMPurify.sanitize(siteData.about);
+
   return (
     <div className="col-12 col-lg-9 d-flex flex-column mx-auto">
       <div className="mb-3" style={{ height: "50vh", maxHeight: "500px" }}>
@@ -58,7 +61,10 @@ function InformationSite() {
 
       <div>
         <h6>Acerca de</h6>
-        <p style={{ textAlign: "justify" }}>{siteData.about}</p>
+        <p
+          style={{ textAlign: "justify" }}
+          dangerouslySetInnerHTML={{ __html: sanitizedAbout }}
+        ></p>
       </div>
 
       <div className="row mt-3">

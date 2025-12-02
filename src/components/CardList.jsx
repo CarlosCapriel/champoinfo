@@ -6,8 +6,10 @@ function CardList() {
   const { siteCards, getListSitesCard } = UseSiteContext();
   console.log("siteCards in CardList:", siteCards);
   useEffect(() => {
-    getListSitesCard();
-  }, []);
+    if (siteCards.length === 0) {
+      getListSitesCard();
+    }
+  }, [siteCards]);
   return (
     <>
       {siteCards.map((site, index) => (
