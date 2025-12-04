@@ -4,7 +4,6 @@ import { UseSiteContext } from "../context/SiteContext";
 
 function CardList() {
   const { siteCards, getListSitesCard } = UseSiteContext();
-  console.log("siteCards in CardList:", siteCards);
   useEffect(() => {
     if (siteCards.length === 0) {
       getListSitesCard();

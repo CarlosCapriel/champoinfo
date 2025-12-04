@@ -19,6 +19,12 @@ import {
   FaMotorcycle,
   FaShoppingBag,
   FaWineBottle,
+  FaWheelchair,
+  FaBeer,
+  FaClock,
+  FaCreditCard,
+  FaCalendarCheck,
+  FaRestroom,
 } from "react-icons/fa";
 import {
   GiTacos,
@@ -29,8 +35,13 @@ import {
   GiSteak,
   GiNoodles,
   GiCupcake,
+  GiParkBench,
+  GiWashingMachine,
+  GiTreeDoor,
+  GiMeal,
 } from "react-icons/gi";
 import { FaStroopwafel } from "react-icons/fa6";
+import { MdBalcony } from "react-icons/md";
 
 export const iconMapper = {
   FaSwimmingPool,
@@ -52,6 +63,12 @@ export const iconMapper = {
   FaMotorcycle,
   FaShoppingBag,
   FaWineBottle,
+  FaWheelchair,
+  FaBeer,
+  FaClock,
+  FaCreditCard,
+  FaCalendarCheck,
+  FaRestroom,
   GiTacos,
   GiShrimp,
   GiFullPizza,
@@ -60,5 +77,10 @@ export const iconMapper = {
   GiSteak,
   GiNoodles,
   GiCupcake,
+  GiParkBench,
+  GiWashingMachine,
+  GiTreeDoor,
+  GiMeal,
   FaStroopwafel,
+  MdBalcony,
 };
